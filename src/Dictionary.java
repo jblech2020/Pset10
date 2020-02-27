@@ -56,28 +56,28 @@ public class Dictionary {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 613, 449);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
 		JPanel Panel = new JPanel();
 		Panel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		frame.getContentPane().add(Panel, BorderLayout.WEST);
-
+		
 		JButton btnNewButton = new JButton("Add");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-
+		
 		JButton btnRemove = new JButton("Remove");
-
+		
 		txtSearch = new JTextField();
 		txtSearch.setHorizontalAlignment(SwingConstants.LEFT);
 		txtSearch.setText("Search...");
 		txtSearch.setColumns(10);
-
+		
 		JCheckBox chckbxAsc = new JCheckBox("Asc");
-
+		
 		JCheckBox chckbxDesc = new JCheckBox("Desc");
-
+		
 		JList list = new JList();
 		list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		GroupLayout gl_Panel = new GroupLayout(Panel);
