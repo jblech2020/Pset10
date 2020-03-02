@@ -21,7 +21,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.JTextArea;
 import javax.swing.JList;
 
-public class Dictionary {
+public class Application {
 
 	private JFrame frame;
 	private JTextField txtSearch;
