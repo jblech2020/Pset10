@@ -1,6 +1,4 @@
 import java.awt.EventQueue;
-
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -69,7 +67,7 @@ public class Application {
             asciiArray.add(asciiWord);
         }
 
-        words = Tools.sortAscending(words, asciiArray);
+        words = Abstract.sortAscending(words, asciiArray);
         return words;
     }
 
