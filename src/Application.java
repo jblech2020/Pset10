@@ -33,7 +33,7 @@ public class Application {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Dictionary window = new Dictionary();
+					Application window = new Application();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,7 +45,7 @@ public class Application {
 	/**
 	 * Create the application.
 	 */
-	public Dictionary() {
+	public Application() {
 		initialize();
 	}
 
