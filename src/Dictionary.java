@@ -1,7 +1,9 @@
 import java.util.ArrayList;
+
+import com.google.gson.*;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import com.google.gson.*;
 
 public class Dictionary {
 	
