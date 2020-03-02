@@ -21,6 +21,10 @@ public class Words {
 
 	}
 
+	public String getWord() {
+		return this.word;
+	}
+	
 	public void setDefinition(Definitions definitions) {
 		this.definitions.add(definitions);
 	}

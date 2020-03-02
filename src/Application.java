@@ -8,6 +8,7 @@ import javax.swing.JDesktopPane;
 import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -49,6 +50,43 @@ public class Application {
 	public Application() {
 		initialize();
 	}
+	
+    private static Words[] sortWordsAscending(Words[] words, int isSorted) {
+        if (isSorted == 1) {
+            return words;
+        }
+        ArrayList<String> wordStrings = new ArrayList<String>();
+        ArrayList<byte[]> asciiArray = new ArrayList<byte[]>();
+        for (Words word : words) {
+            wordStrings.add((word.getWord()));
+        }
+
+        for (String s : wordStrings) {
+            byte[] asciiWord = new byte[s.length()];
+            for(int i = 0; i < s.length(); i++) {
+                asciiWord[i] = (byte) s.charAt(i);
+            }
+            asciiArray.add(asciiWord);
+        }
+
+        words = Tools.sortAscending(words, asciiArray);
+        return words;
+    }
+
+    private static Words[] sortWordsDescending(Words[] words, int isSorted) {
+        if (isSorted == 2) {
+            return words;
+        }
+        words = sortWordsAscending(words, 0);
+        int n = words.length;
+        int j = n;
+        Words[] b = new Words[n]; 
+        for (int i = 0; i < n; i++) { 
+            b[j - 1] = words[i]; 
+            j = j - 1; 
+        } 
+        return b;
+    }
 
 	/**
 	 * Initialize the contents of the frame.
