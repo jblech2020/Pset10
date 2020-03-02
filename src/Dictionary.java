@@ -1,9 +1,8 @@
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
+
 public class Dictionary {
 	
 	public static Words[] wordList;
