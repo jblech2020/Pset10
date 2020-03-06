@@ -10,7 +10,7 @@ import java.awt.event.*;
 
 public class Application {
 
-	private JFrame frmKylesEdictionary;
+	private JFrame frmDictionary;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 
 	/**
@@ -22,7 +22,7 @@ public class Application {
 			public void run() {
 				try {
 					Application window = new Application();
-					window.frmKylesEdictionary.setVisible(true);
+					window.frmDictionary.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -41,12 +41,12 @@ public class Application {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmKylesEdictionary = new JFrame();
-		frmKylesEdictionary.setResizable(false);
-		frmKylesEdictionary.setTitle("Kyle's eDictionary");
-		frmKylesEdictionary.setBounds(100, 100, 965, 512);
-		frmKylesEdictionary.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmKylesEdictionary.getContentPane().setLayout(null);
+		frmDictionary = new JFrame();
+		frmDictionary.setResizable(false);
+		frmDictionary.setTitle("Word Dictionary");
+		frmDictionary.setBounds(100, 100, 965, 512);
+		frmDictionary.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmDictionary.getContentPane().setLayout(null);
 
 		/**
 		 * Button to add word
@@ -58,7 +58,7 @@ public class Application {
 		    }
 		});
 		btnAdd.setBounds(10, 11, 89, 23);
-		frmKylesEdictionary.getContentPane().add(btnAdd);
+		frmDictionary.getContentPane().add(btnAdd);
 
 		/**
 		 * Button to remove word
@@ -70,7 +70,7 @@ public class Application {
 		    }
 		});
 		btnRemove.setBounds(109, 11, 89, 23);
-		frmKylesEdictionary.getContentPane().add(btnRemove);
+		frmDictionary.getContentPane().add(btnRemove);
 
 
 		/**
@@ -78,7 +78,7 @@ public class Application {
 		 */
 		JTextField searchBox = new JTextField();
 		searchBox.setBounds(10, 45, 188, 20);
-		frmKylesEdictionary.getContentPane().add(searchBox);
+		frmDictionary.getContentPane().add(searchBox);
 		searchBox.setColumns(10);
 
 		/**
@@ -93,7 +93,7 @@ public class Application {
 		rdbtnAsc.setToolTipText("Sorts in ascending order");
 		buttonGroup.add(rdbtnAsc);
 		rdbtnAsc.setBounds(36, 70, 63, 23);
-		frmKylesEdictionary.getContentPane().add(rdbtnAsc);
+		frmDictionary.getContentPane().add(rdbtnAsc);
 
 		/**
 		 * Radio button to sort in descending order
@@ -107,21 +107,21 @@ public class Application {
 		rdbtnDesc.setToolTipText("Sorts in descending order");
 		buttonGroup.add(rdbtnDesc);
 		rdbtnDesc.setBounds(122, 70, 54, 23);
-		frmKylesEdictionary.getContentPane().add(rdbtnDesc);
+		frmDictionary.getContentPane().add(rdbtnDesc);
 
 		/**
 		 * Main container for word information and dialogues
 		 */
 		JScrollPane wordInfo = new JScrollPane();
 		wordInfo.setBounds(214, 11, 725, 452);
-		frmKylesEdictionary.getContentPane().add(wordInfo);
+		frmDictionary.getContentPane().add(wordInfo);
 
 		/**
 		 * Scroll Bar
 		 */
 		JScrollPane wordList = new JScrollPane();
 		wordList.setBounds(10, 99, 188, 364);
-		frmKylesEdictionary.getContentPane().add(wordList);
+		frmDictionary.getContentPane().add(wordList);
 
 		/**
 		 * Word List
