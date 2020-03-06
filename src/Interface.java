@@ -7,14 +7,6 @@ import javax.swing.text.html.ListView;
 
 import com.google.gson.*;
 
-import javafx.scene.control.CheckBox;
-import javafx.application.Application;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-
-
 public class Interface extends Application {
 		static int lastIndex = -1;
 		static String lastWord = "";
