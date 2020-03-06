@@ -23,6 +23,8 @@ import javax.swing.JList;
 
 public class Application {
 
+    private Word[] words;
+	
 	private JFrame frame;
 	private JTextField txtSearch;
 
@@ -41,6 +43,12 @@ public class Application {
 			}
 		});
 	}
+	
+    public void printAll() {
+        for (Word word: words) {
+            System.out.println(word.getWord());
+        }
+    }
 
 	/**
 	 * Create the application.
