@@ -13,9 +13,6 @@ import javax.swing.JTextField;
 import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
 import javax.swing.border.BevelBorder;
-
-//import org.graalvm.compiler.word.Word;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -26,7 +23,7 @@ import javax.swing.JList;
 
 public class Application {
 
-//    private Word[] words;
+    private Words[] words;
 	
 	private JFrame frame;
 	private JTextField txtSearch;
@@ -47,11 +44,11 @@ public class Application {
 		});
 	}
 	
-//    public void printAll() {
-//        for (Word word: words) {
-//            System.out.println(word.getWord());
-//        }
-//    }
+    public void printAll() {
+        for (Words word: words) {
+            System.out.println(word.getWord());
+        }
+    }
 
 	/**
 	 * Create the application.
