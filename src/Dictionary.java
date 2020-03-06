@@ -9,7 +9,7 @@ public class Dictionary {
 	
 	public static Words[] wordList;
 	public static Words[] addAllWords() throws JsonSyntaxException, JsonIOException, FileNotFoundException {
-		wordList = new Gson().fromJson(new FileReader(".\\json\\words.json"), Words[].class);
+		wordList = new Gson().fromJson(new FileReader("./json/words.json"), Words[].class);
 		return wordList;
 	}
 
