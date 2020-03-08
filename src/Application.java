@@ -1,10 +1,15 @@
 import java.awt.EventQueue;
 
 import javax.swing.*;
+
+import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.awt.event.*;
 
 public class Application {
@@ -226,5 +231,19 @@ public class Application {
             j = j - 1;
         }
         return b;
+	}
+	
+	/**
+	 * Adds words to listOfWords and returns it
+	 */
+	private static ArrayList<Words> getWordClass() throws FileNotFoundException{
+		Gson gson = new Gson();
+        BufferedReader br = new BufferedReader(new FileReader(".\\JSON\\words.json"));
+        Words[] words = gson.fromJson(br, Words[].class);
+        ArrayList<Words> listOfWords = new ArrayList<Words>();
+        for (Words word : words) {
+        	listOfWords.add(word);
+        };
+        return listOfWords;
 	}
 }
