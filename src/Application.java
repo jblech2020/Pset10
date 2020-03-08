@@ -213,4 +213,18 @@ public class Application {
         }
 		return listOfWords;
 	}
+	
+	/**
+	 * Reverses the order of a DLM (used when searching in reverse order)
+	 */
+	public static DefaultListModel<String> reverseOrder(DefaultListModel<String> words) {
+		DefaultListModel<String> b = new DefaultListModel<String>();
+		int n = words.getSize();
+        int j = n;
+        for (int i = 0; i < n; i++) {
+            b.addElement(words.get(j-1));
+            j = j - 1;
+        }
+        return b;
+	}
 }
