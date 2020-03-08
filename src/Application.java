@@ -133,5 +133,66 @@ public class Application {
 			DLM.addElement(i);
 		}
 		list.setModel(DLM);
-	}
+	
+	/**
+	 * Automatically populates list from the Array in Dictionary.java
+	 */
+	list.addListSelectionListener(new ListSelectionListener() {
+		boolean ranOnce = false;
+		public void valueChanged(ListSelectionEvent arg0) {
+			if(ranOnce) {
+				ranOnce = false;
+			}else {
+				ranOnce = true;
+
+				String selectedWord = list.getSelectedValue();
+				System.out.println("Selected word: " + selectedWord);
+
+				try {
+					ArrayList<Words> Words = getWordClass();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	});
+	
+	wordListSP.setViewportView(list);
+	DefaultListModel<String> DLM = getWordsDLM();;
+	list.setModel(DLM);
+
+	/**
+	 * Searches through words based on searchBox's contents
+	 */
+	searchBox.addKeyListener(new KeyAdapter() {
+		@Override
+		public void keyReleased(KeyEvent e) {
+			String searched = searchBox.getText().toLowerCase();
+			System.out.println("Searched term: " + searched);
+			DefaultListModel<String> words = new DefaultListModel<String>();
+			if (!rdbtnAsc.isSelected()) {
+			    try {
+			    	words = reverseOrder(getWordsDLM());
+				} catch (FileNotFoundException e2) {
+					e2.printStackTrace();
+				}
+			} else {
+				try {
+					words = getWordsDLM();
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				}
+			}
+			DefaultListModel<String> filtered = new DefaultListModel<String>();
+			for (int i = 0 ; i < words.size(); i++) {
+				if((words.get(i).startsWith(searched))) {
+					filtered.addElement(words.get(i));
+				}
+			}
+			list.setModel(filtered);
+
+		}
+	});
+	searchBox.setToolTipText("Search");
+}
 }
