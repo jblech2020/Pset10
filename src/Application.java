@@ -2,7 +2,7 @@ import java.awt.EventQueue;
 
 import javax.swing.*;
 
-import com.google.gson.JsonIOException;
+//import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.FileNotFoundException;
