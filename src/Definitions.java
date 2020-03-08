@@ -19,8 +19,8 @@ public class Definitions {
         this.partOfSpeech = partOfSpeech;
     }
 
-    public String getPartOfSpeech() {
-        return this.partOfSpeech;
-    }
+//    public String getPartOfSpeech() {
+//        return this.partOfSpeech;
+//    }
 
 }
