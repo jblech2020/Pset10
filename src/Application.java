@@ -287,4 +287,38 @@ public class Application {
 	    	}
         }
 	}
+	
+	wordList = newWordList;
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	String json = gson.toJson(wordList);
+		try {
+			FileWriter writer = new FileWriter("./json/words.json");
+			writer.write(json);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Adds to the arraylist
+	 */
+	public static Words[] addToList(int n, Words wordList[], Words word) { 
+	    Words newWordList[] = new Words[n + 1]; 
+	
+	    for (int i = 0; i < n; i++) {
+	        newWordList[i] = wordList[i]; 
+	    }
+	    newWordList[n] = word; 
+	
+	    return newWordList; 
+	}
+	
+	/**
+	 * Adds all of the collected words
+	 */
+	public static Words[] addAllWords(Words[] wordList) throws JsonSyntaxException, JsonIOException, FileNotFoundException {
+		wordList = new Gson().fromJson(new FileReader("./json/words.json"), Words[].class);
+		return wordList;
+	}
 }
