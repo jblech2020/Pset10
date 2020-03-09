@@ -3,12 +3,15 @@ import java.awt.EventQueue;
 import javax.swing.*;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.event.*;
 
@@ -238,12 +241,29 @@ public class Application {
 	 */
 	private static ArrayList<Words> getWordClass() throws FileNotFoundException{
 		Gson gson = new Gson();
-        BufferedReader br = new BufferedReader(new FileReader(".\\JSON\\words.json"));
+        BufferedReader br = new BufferedReader(new FileReader("./json/words.json"));
         Words[] words = gson.fromJson(br, Words[].class);
         ArrayList<Words> listOfWords = new ArrayList<Words>();
         for (Words word : words) {
         	listOfWords.add(word);
         };
         return listOfWords;
+	}
+	
+	/**
+	 * Adds words to Json file
+	 */
+	public static void addWord(Words word, Words[] wordList) {
+		Gson gson=new GsonBuilder().setPrettyPrinting().create();
+		String json = gson.toJson(addToList(wordList.length, wordList, word));
+		wordList = addToList(wordList.length, wordList, word);
+		try {
+			FileWriter writer = new FileWriter("./json/words.json");
+			wordList = addAllWords(wordList);
+			writer.write(json);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
