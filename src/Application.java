@@ -37,6 +37,21 @@ public class Application {
 			}
 		});
 	}
+	
+	 /**
+     * DLM of words, sorted in ascending order
+     */
+    private static DefaultListModel<String> getWordsDLM() throws FileNotFoundException, NullPointerException {
+        Gson gson = new Gson();
+        BufferedReader br = new BufferedReader(new FileReader("./json/words.json"));
+        Words[] words = gson.fromJson(br, Words[].class);
+        DefaultListModel<String> listOfWords = new DefaultListModel<String>();
+        for (Words word : words) {
+            listOfWords.addElement(word.getWord());
+        };
+        return sortWordsAsc(listOfWords);
+    }
+	
 
 	/**
 	 * Create the application.
@@ -172,6 +187,7 @@ public class Application {
 		}
 	});
 	
+
 	wordListSP.setViewportView(list);
 	DefaultListModel<String> DLM = getWordsDLM();;
 	list.setModel(DLM);
