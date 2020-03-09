@@ -1,20 +1,20 @@
 import java.awt.EventQueue;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
-
+import javax.swing.event.ListSelectionListener;
+import com.google.gson.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.awt.event.*;
 
 public class Application {
 
@@ -64,6 +64,12 @@ public class Application {
 		    public void actionPerformed(ActionEvent evt) {
 		        System.out.println("Add");
 		    }
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 		btnAdd.setBounds(10, 11, 89, 23);
 		frmDictionary.getContentPane().add(btnAdd);
