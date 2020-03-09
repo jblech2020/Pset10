@@ -266,4 +266,25 @@ public class Application {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Deletes words from the Json
+	 */
+	public static void delWord(Words[] wordsToDel, Words[] wordList) {
+	    Words newWordList[] = new Words[wordList.length - wordsToDel.length]; 
+	    Boolean kill = false;
+	    for (int i = 0; i < newWordList.length; i++) {
+	    	kill = false;
+	    	for (Words deadWord : wordsToDel) {
+	    		if (wordList[i] == deadWord) {
+	    			kill = true;
+	    		}
+	    		if (!kill) {
+	        		newWordList[i] = wordList[i];
+	        	} else {
+	        		newWordList[i] = wordList[i + 1];
+	        	}
+	    	}
+        }
+	}
 }
