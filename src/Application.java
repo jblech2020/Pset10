@@ -1,6 +1,4 @@
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -8,6 +6,12 @@ import java.awt.event.KeyEvent;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultCaret;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+
 import com.google.gson.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -17,26 +21,27 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Application {
-
 	private JFrame frmDictionary;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
+    private final ButtonGroup buttonGroup = new ButtonGroup();
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) throws JsonSyntaxException, JsonIOException, FileNotFoundException {
-		Dictionary.addAllWords();
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Application window = new Application();
-					window.frmDictionary.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) throws JsonSyntaxException, JsonIOException, FileNotFoundException {
+        getWordsDLM();
+        Dictionary.addAllWords();
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    Application window = new Application();
+                    window.frmDictionary.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 	
 	 /**
      * DLM of words, sorted in ascending order
@@ -56,179 +61,260 @@ public class Application {
 	/**
 	 * Create the application.
 	 */
-	public Application() {
+	public Application() throws FileNotFoundException {
 		initialize();
 	}
 
 	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frmDictionary = new JFrame();
-		frmDictionary.setResizable(false);
-		frmDictionary.setTitle("Word Dictionary");
-		frmDictionary.setBounds(100, 100, 965, 512);
-		frmDictionary.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmDictionary.getContentPane().setLayout(null);
+     * Initialize the contents of the frame.
+     * @throws FileNotFoundException
+     */
+    private void initialize() throws FileNotFoundException {
+    	frmDictionary = new JFrame();
+    	frmDictionary.setResizable(false);
+    	frmDictionary.setTitle("Kyle's eDictionary");
+    	frmDictionary.setBounds(100, 100, 965, 512);
+    	frmDictionary.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	frmDictionary.getContentPane().setLayout(null);
+        Words[] wordList = Dictionary.wordList;
 
-		/**
-		 * Button to add word
-		 */
-		JButton btnAdd = new JButton("ADD");
-		btnAdd.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent evt) {
-		        System.out.println("Add");
-		    }
+        /**
+         * Main container for word information and dialogues
+         */
+        JScrollPane wordInfo = new JScrollPane();
+        wordInfo.setBounds(214, 11, 725, 452);
+        frmDictionary.getContentPane().add(wordInfo);
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		btnAdd.setBounds(10, 11, 89, 23);
-		frmDictionary.getContentPane().add(btnAdd);
+        JTextPane textPane = new JTextPane();
+        textPane.setEditable(false);
+        wordInfo.setViewportView(textPane);
+        StyledDocument doc = textPane.getStyledDocument();
+        DefaultCaret caret = (DefaultCaret) textPane.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+        textPane.setBorder(BorderFactory.createCompoundBorder(textPane.getBorder(), BorderFactory.createEmptyBorder(10, 10 ,10 , 10)));
 
-		/**
-		 * Button to remove word
-		 */
-		JButton btnRemove = new JButton("REMOVE");
-		btnRemove.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent evt) {
-		        System.out.println("Remove");
-		    }
-		});
-		btnRemove.setBounds(109, 11, 89, 23);
-		frmDictionary.getContentPane().add(btnRemove);
+        /**
+         * Scroll pane that contains the list of words
+         */
+        JScrollPane wordListSP = new JScrollPane();
+        wordListSP.setBounds(10, 99, 188, 364);
+        frmDictionary.getContentPane().add(wordListSP);
 
+        /**
+         * List of words
+         */
+        JList<String> list = new JList<String>();
+        list.addListSelectionListener(new ListSelectionListener() {
+            boolean ranOnce = false;
+            public void valueChanged(ListSelectionEvent arg0) {
+                if(ranOnce) {
+                    ranOnce = false;
+                }else {
+                    ranOnce = true;
 
-		/**
-		 * Search box to... well... search
-		 */
-		JTextField searchBox = new JTextField();
-		searchBox.setBounds(10, 45, 188, 20);
-		frmDictionary.getContentPane().add(searchBox);
-		searchBox.setColumns(10);
+                    String selectedWord = list.getSelectedValue();
+                    System.out.println(selectedWord);
 
-		/**
-		 * Radio button to sort in ascending order
-		 */
-		JRadioButton rdbtnAsc = new JRadioButton("Asc");
-		rdbtnAsc.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent evt) {
-		        System.out.println("Ascending");
-		    }
-		});
-		rdbtnAsc.setToolTipText("Sorts in ascending order");
-		buttonGroup.add(rdbtnAsc);
-		rdbtnAsc.setBounds(36, 70, 63, 23);
-		frmDictionary.getContentPane().add(rdbtnAsc);
+                    try {
+                        ArrayList<Words> Words = getWordClass();
+                        for (Words word: Words) {
+                            if (word.getWord().equals(selectedWord)) {
+                                doc.remove(0, doc.getLength());
+                                Style bigWord = textPane.addStyle("Style", null);
+                                Style header = textPane.addStyle("Style", null);
+                                StyleConstants.setFontSize(header, 20);
+                                StyleConstants.setFontSize(bigWord, 36);
+                                StyleConstants.setBold(bigWord, true);
+                                doc.insertString(doc.getLength(), selectedWord.substring(0, 1).toUpperCase() + selectedWord.substring(1) + "\n", bigWord );
+                                doc.insertString(doc.getLength(), "\n" ,null );
+                                doc.insertString(doc.getLength(), "Definitions\n", header );
+                                doc.insertString(doc.getLength(), "\n" ,null );
+                                Definitions[] definitions = word.getDefinitions();
+                                int definitionCounter = 1;
+                                for (Definitions definition : definitions) {
+                                    doc.insertString(doc.getLength(), definitionCounter + ". " + selectedWord +" (" + definition.getPartOfSpeech() +")\n\n    "  +  definition.getDefinition() + "\n\n", null);
+                                    definitionCounter++;
+                                }
+                                String[] synonyms = word.getSynonyms();
+                                if(synonyms.length != 0) {
+                                    doc.insertString(doc.getLength(),"Synonyms\n" ,header );
+                                    doc.insertString(doc.getLength(),"\n" ,null );
+                                    int synonymCounter = 1;
+                                    for(String synonym : synonyms) {
 
-		/**
-		 * Radio button to sort in descending order
-		 */
-		JRadioButton rdbtnDesc = new JRadioButton("Desc");
-		rdbtnDesc.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent evt) {
-		        System.out.println("Descending");
-		    }
-		});
-		rdbtnDesc.setToolTipText("Sorts in descending order");
-		buttonGroup.add(rdbtnDesc);
-		rdbtnDesc.setBounds(122, 70, 54, 23);
-		frmDictionary.getContentPane().add(rdbtnDesc);
+                                        doc.insertString(doc.getLength(), synonymCounter + ". " + synonym + "\n", null);
+                                        synonymCounter++;
+                                    }
+                                }
+                                String[] antonyms = word.getAntonyms();
+                                if (antonyms.length != 0) {
+                                    doc.insertString(doc.getLength(),"\n" ,null );
+                                    doc.insertString(doc.getLength(),"Antonyms\n" ,header );
+                                    doc.insertString(doc.getLength(),"\n" ,null );
+                                    int antonymCounter = 1;
+                                    for(String antonym : antonyms) {
+                                        doc.insertString(doc.getLength(), antonymCounter + ". " + antonym + "\n", null);
+                                        antonymCounter++;
+                                    }
+                                }
 
-		/**
-		 * Main container for word information and dialogues
-		 */
-		JScrollPane wordInfo = new JScrollPane();
-		wordInfo.setBounds(214, 11, 725, 452);
-		frmDictionary.getContentPane().add(wordInfo);
+                            }
+                        }
+                    } catch (FileNotFoundException | BadLocationException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
-		/**
-		 * Scroll Bar
-		 */
-		JScrollPane wordList = new JScrollPane();
-		wordList.setBounds(10, 99, 188, 364);
-		frmDictionary.getContentPane().add(wordList);
+        /**
+         * Button to add a word
+         */
+        JButton btnAdd = new JButton("ADD");
+        btnAdd.addActionListener(e -> {
+            System.out.println("Add");
+            /**
+             * Need to open window to do stuff
+             */
+//            addWord(wordToAdd, wordList);
+        });
+        btnAdd.setBounds(10, 11, 89, 23);
+        frmDictionary.getContentPane().add(btnAdd);
 
-		/**
-		 * Word List
-		 */
-		JList<String> list = new JList<String>();
-		wordList.setViewportView(list);
+        /**
+         * Button to remove a word
+         */
+        JButton btnRemove = new JButton("REMOVE");
+        btnRemove.addActionListener(e -> {
+            System.out.println("Remove");
+//            delWord(wordsToDelete, wordList);
+        });
+        btnRemove.setBounds(109, 11, 89, 23);
+        frmDictionary.getContentPane().add(btnRemove);
 
-		DefaultListModel<String> DLM = new DefaultListModel<String>();
-		for (String i : Dictionary.listWords()) {
-			DLM.addElement(i);
-		}
-		list.setModel(DLM);
+        /**
+         * Search box to... well... search
+         */
+        JTextField searchBox = new JTextField();
+        searchBox.setBounds(10, 45, 188, 20);
+        frmDictionary.getContentPane().add(searchBox);
+        searchBox.setColumns(10);
+
+        /**
+         * Radio button to sort in ascending order
+         */
+        JRadioButton rdbtnAsc = new JRadioButton("Asc");
+        rdbtnAsc.addActionListener(e -> {
+        });
+        rdbtnAsc.setToolTipText("Sorts in ascending order");
+        rdbtnAsc.setSelected(true);
+        buttonGroup.add(rdbtnAsc);
+        rdbtnAsc.setBounds(36, 70, 63, 23);
+        frmDictionary.getContentPane().add(rdbtnAsc);
+
+        /**
+         * Radio button to sort in descending order
+         */
+        JRadioButton rdbtnDesc = new JRadioButton("Desc");
+        rdbtnDesc.addActionListener(e -> {
+        });
+        rdbtnDesc.setToolTipText("Sorts in descending order");
+        buttonGroup.add(rdbtnDesc);
+        rdbtnDesc.setBounds(122, 70, 54, 23);
+        frmDictionary.getContentPane().add(rdbtnDesc);
+        rdbtnDesc.addItemListener(new ItemListener() {
+            
+        	/**
+             * Changed between sorting in ascended or descended order
+             */
+            @Override
+            public void itemStateChanged(ItemEvent event) {
+
+                int state = event.getStateChange();
+                if (state == ItemEvent.SELECTED) {
+                    try {
+                        searchBox.setText("");
+                        list.setModel(reverseOrder(getWordsDLM()));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                } else if (state == ItemEvent.DESELECTED) {
+                    try {
+                        searchBox.setText("");
+                        list.setModel(getWordsDLM());
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        });
+
+        /**
+         * Populates list with Words
+         */
+        list.addListSelectionListener(new ListSelectionListener() {
+            boolean ranOnce = false;
+            public void valueChanged(ListSelectionEvent arg0) {
+                if(ranOnce) {
+                    ranOnce = false;
+                }else {
+                    ranOnce = true;
+
+                    String selectedWord = list.getSelectedValue();
+                    System.out.println("Selected word: " + selectedWord);
+
+                    try {
+                        ArrayList<Words> Words = getWordClass();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+        wordListSP.setViewportView(list);
+        DefaultListModel<String> DLM = getWordsDLM();;
+        list.setModel(DLM);
+
+        /**
+         * Search
+         */
+        searchBox.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String searched = searchBox.getText().toLowerCase();
+                System.out.println("Searched term: " + searched);
+                DefaultListModel<String> words = new DefaultListModel<String>();
+                if (!rdbtnAsc.isSelected()) {
+                    try {
+                        words = reverseOrder(getWordsDLM());
+                    } catch (FileNotFoundException e2) {
+                        e2.printStackTrace();
+                    }
+                } else {
+                    try {
+                        words = getWordsDLM();
+                    } catch (FileNotFoundException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                DefaultListModel<String> filtered = new DefaultListModel<String>();
+                for (int i = 0 ; i < words.size(); i++) {
+                    if((words.get(i).startsWith(searched))) {
+                        filtered.addElement(words.get(i));
+                    }
+                }
+                list.setModel(filtered);
+
+            }
+        });
+        searchBox.setToolTipText("Search");
+    }
 	
 	/**
-	 * Automatically populates list from the Array in Dictionary.java
-	 */
-	list.addListSelectionListener(new ListSelectionListener() {
-		boolean ranOnce = false;
-		public void valueChanged(ListSelectionEvent arg0) {
-			if(ranOnce) {
-				ranOnce = false;
-			}else {
-				ranOnce = true;
-
-				String selectedWord = list.getSelectedValue();
-				System.out.println("Selected word: " + selectedWord);
-
-				try {
-					ArrayList<Words> Words = getWordClass();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	});
-	
-
-	wordListSP.setViewportView(list);
-	DefaultListModel<String> DLM = getWordsDLM();;
-	list.setModel(DLM);
-
-	/**
-	 * Searches through words based on searchBox's contents
-	 */
-	searchBox.addKeyListener(new KeyAdapter() {
-		@Override
-		public void keyReleased(KeyEvent e) {
-			String searched = searchBox.getText().toLowerCase();
-			System.out.println("Searched term: " + searched);
-			DefaultListModel<String> words = new DefaultListModel<String>();
-			if (!rdbtnAsc.isSelected()) {
-			    try {
-			    	words = reverseOrder(getWordsDLM());
-				} catch (FileNotFoundException e2) {
-					e2.printStackTrace();
-				}
-			} else {
-				try {
-					words = getWordsDLM();
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				}
-			}
-			DefaultListModel<String> filtered = new DefaultListModel<String>();
-			for (int i = 0 ; i < words.size(); i++) {
-				if((words.get(i).startsWith(searched))) {
-					filtered.addElement(words.get(i));
-				}
-			}
-			list.setModel(filtered);
-
-		}
-	});
-	searchBox.setToolTipText("Search");
-	}
-	
-	/**
-	 * Sorts the DLM of words in ascending order
+	 * Sorts words in ascending order
 	 */
 	public static DefaultListModel<String> sortWordsAsc(DefaultListModel<String> listOfWords) {
 		String temp;
@@ -246,7 +332,7 @@ public class Application {
 	}
 	
 	/**
-	 * Reverses the order of a DLM (used when searching in reverse order)
+	 * Reverse Order
 	 */
 	public static DefaultListModel<String> reverseOrder(DefaultListModel<String> words) {
 		DefaultListModel<String> b = new DefaultListModel<String>();
