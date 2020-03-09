@@ -271,26 +271,26 @@ public class Application {
 	 * Deletes words from the Json
 	 */
 	public static void delWord(Words[] wordsToDel, Words[] wordList) {
-	    Words newWordList[] = new Words[wordList.length - wordsToDel.length]; 
-	    Boolean kill = false;
-	    for (int i = 0; i < newWordList.length; i++) {
-	    	kill = false;
-	    	for (Words deadWord : wordsToDel) {
-	    		if (wordList[i] == deadWord) {
-	    			kill = true;
-	    		}
-	    		if (!kill) {
-	        		newWordList[i] = wordList[i];
-	        	} else {
-	        		newWordList[i] = wordList[i + 1];
-	        	}
-	    	}
+        Words newWordList[] = new Words[wordList.length - wordsToDel.length]; 
+        Boolean kill = false;
+        for (int i = 0; i < newWordList.length; i++) {
+        	kill = false;
+        	for (Words deadWord : wordsToDel) {
+        		if (wordList[i] == deadWord) {
+        			kill = true;
+        		}
+        		if (!kill) {
+            		newWordList[i] = wordList[i];
+            	} else {
+            		newWordList[i] = wordList[i + 1];
+            	}
+        	}
+        	
         }
-	}
-	
-	wordList = newWordList;
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-	String json = gson.toJson(wordList);
+
+        wordList = newWordList;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String json = gson.toJson(wordList);
 		try {
 			FileWriter writer = new FileWriter("./json/words.json");
 			writer.write(json);
@@ -298,7 +298,7 @@ public class Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+    }
 
 	/**
 	 * Adds to the arraylist
