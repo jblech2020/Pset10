@@ -104,18 +104,18 @@ public class AddWordPage {
         posLabel.setFont(new Font("SansSerif", Font.PLAIN, 13));
         addWordFrame.getContentPane().add(posLabel);
 
-        definitionTextField = new JTextField("Definition...");
+        definitionTextField = new JTextField("Definition");
         definitionTextField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (definitionTextField.getText().equals("Definition...")) {
+                if (definitionTextField.getText().equals("Definition")) {
                     definitionTextField.setText("");
                 }
             }
             @Override
             public void focusLost(FocusEvent e) {
                 if (definitionTextField.getText().equals("")) {
-                    definitionTextField.setText("Definition...");
+                    definitionTextField.setText("Definition");
                 }
             }
         });
@@ -129,18 +129,18 @@ public class AddWordPage {
         definitionLabel.setFont(new Font("SansSerif", Font.PLAIN, 13));
         addWordFrame.getContentPane().add(definitionLabel);
 
-        synonymsTextField = new JTextField("Synonyms...");
+        synonymsTextField = new JTextField("Synonyms");
         synonymsTextField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (synonymsTextField.getText().equals("Synonyms...")) {
+                if (synonymsTextField.getText().equals("Synonyms")) {
                     synonymsTextField.setText("");
                 }
             }
             @Override
             public void focusLost(FocusEvent e) {
                 if (synonymsTextField.getText().equals("")) {
-                    synonymsTextField.setText("Synonyms...");
+                    synonymsTextField.setText("Synonyms");
                 }
             }
         });
@@ -154,18 +154,18 @@ public class AddWordPage {
         synonymsLabel.setFont(new Font("SansSerif", Font.PLAIN, 13));
         addWordFrame.getContentPane().add(synonymsLabel);
 
-        antonymsTextField = new JTextField("Antonyms...");
+        antonymsTextField = new JTextField("Antonyms");
         antonymsTextField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (antonymsTextField.getText().equals("Antonyms...")) {
+                if (antonymsTextField.getText().equals("Antonyms")) {
                     antonymsTextField.setText("");
                 }
             }
             @Override
             public void focusLost(FocusEvent e) {
                 if (antonymsTextField.getText().equals("")) {
-                    antonymsTextField.setText("Antonyms...");
+                    antonymsTextField.setText("Antonyms");
                 }
             }
         });
