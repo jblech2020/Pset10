@@ -44,7 +44,7 @@ public class Application {
 
 	
 	 /**
-     * DLM of words, sorted in ascending order
+     * Sorted in ascending order
      */
     private static DefaultListModel<String> getWordsDLM() throws FileNotFoundException, NullPointerException {
         Gson gson = new Gson();
@@ -72,8 +72,8 @@ public class Application {
     private void initialize() throws FileNotFoundException {
     	frmDictionary = new JFrame();
     	frmDictionary.setResizable(false);
-    	frmDictionary.setTitle("Kyle's eDictionary");
-    	frmDictionary.setBounds(100, 100, 965, 512);
+    	frmDictionary.setTitle("Dictionary of WORDS");
+    	frmDictionary.setBounds(100, 100, 1000, 512);
     	frmDictionary.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frmDictionary.getContentPane().setLayout(null);
         Words[] wordList = Dictionary.wordList;
@@ -82,7 +82,7 @@ public class Application {
          * Main container for word information and dialogues
          */
         JScrollPane wordInfo = new JScrollPane();
-        wordInfo.setBounds(214, 11, 725, 452);
+        wordInfo.setBounds(214, 11, 775, 452);
         frmDictionary.getContentPane().add(wordInfo);
 
         JTextPane textPane = new JTextPane();
@@ -171,14 +171,22 @@ public class Application {
          * Button to add a word
          */
         JButton btnAdd = new JButton("ADD");
-        btnAdd.addActionListener(e -> {
-            System.out.println("Add");
-            /**
-             * Need to open window to do stuff
-             */
-//            addWord(wordToAdd, wordList);
-        });
         btnAdd.setBounds(10, 11, 89, 23);
+        btnAdd.addActionListener(new java.awt.event.ActionListener(){
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent arg0) {
+            	EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							AddWordPage window = new AddWordPage();
+							window.addWordFrame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+        });
         frmDictionary.getContentPane().add(btnAdd);
 
         /**
@@ -193,7 +201,7 @@ public class Application {
         frmDictionary.getContentPane().add(btnRemove);
 
         /**
-         * Search box to... well... search
+         * Search Box Format
          */
         JTextField searchBox = new JTextField();
         searchBox.setBounds(10, 45, 188, 20);
@@ -201,7 +209,7 @@ public class Application {
         searchBox.setColumns(10);
 
         /**
-         * Radio button to sort in ascending order
+         * Box to sort in ascending order
          */
         JRadioButton rdbtnAsc = new JRadioButton("Asc");
         rdbtnAsc.addActionListener(e -> {
@@ -213,7 +221,7 @@ public class Application {
         frmDictionary.getContentPane().add(rdbtnAsc);
 
         /**
-         * Radio button to sort in descending order
+         * Box to sort in descending order
          */
         JRadioButton rdbtnDesc = new JRadioButton("Desc");
         rdbtnDesc.addActionListener(e -> {
